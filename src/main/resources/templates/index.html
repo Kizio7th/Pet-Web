@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, height=auto, initial-scale=1.0" /> 
+    <title>Choose your Boss</title>
+    <link rel="shortcut icon" th:href="@{/assets/images/web-icon.png}"  type="image/x-icon">
+    <link rel="stylesheet" th:href="@{/assets/css/builder.css}" />
+    <link rel="stylesheet" th:href="@{/assets/themify-icons/themify-icons.css}" />
+  </head>
+  <body>
+    <div id="header">
+      <div class="info">
+        <div class="social-media">
+          <i class="ti-facebook"></i>
+          <i class="ti-instagram"></i>
+          <i class="ti-youtube"></i>
+        </div>
+        <div class="contact">
+          <i class="ti-email"></i>
+          <p>chooseyourboss@gmail.com</p>
+          <i class="ti-mobile"></i>
+          <p>12345678</p>
+        </div>
+      </div>
+      <div class="nav-icon">
+        <a th:href="@{/}"><img th:src="@{/assets/images/header-nav.png}" /></a>
+      </div>
+      <ul id="nav">
+        <li><a th:href="@{'/' + '#about'}">About</a></li>
+        <li><a th:href="@{'/' + '#category'}">Category</a></li>
+        <li><a th:href="@{/pets}">Pets</a></li>
+        <li><a th:href="@{/chat}">Chat</a></li>
+        <li><a sec:authorize="!isAuthenticated()" th:href="@{/login}" >Login</a></li>
+        <li sec:authorize="isAuthenticated()" >
+        	<i class="ti-user"></i>
+        	<ul class="sub-nav">
+            <h3 th:text="${currentUser.name}"></h3>
+            <li>
+            	<a th:href="@{${currentUser.id == 1} ? '/users' : '/user/' + ${currentUser.id}}">
+					      <i class="fa-solid fa-user"></i> Profile
+				      </a>
+			      </li>
+            <li><a th:href="@{/logout}" ><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a></li>
+        	</ul>
+        </li>
+      </ul>
+    </div>
+    <div class="header-space"></div>
+    <div id="home">
+      <div class="home-text">
+        <p class="home-title">Pet Lover</p>
+        <p class="home-desc">Discover Pet Exchange: Connecting Pet Lovers Worldwide</p>  
+        <a hth:href="@{'/' + '#about'}" class="home-desc-button">Read more</a>
+      </div>
+      <div class="home-image">
+        <img th:src="@{/assets/images/home-img.png}" class="cat-selfie" />
+        <img th:src="@{/assets/images/home-speech.png}" class="speech-bubble" />  
+      </div>      
+    </div>
+    <div id="about">
+    	<br><br><br>
+      <div class="about-text">
+        <p class="about-title">About This Website</p>
+        <div class="about-desc">
+          <p>Welcome to Pet Exchange, the ultimate online platform for pet lovers worldwide. Connect, trade, and share the joy of pets with our vibrant community. Find pets, supplies, and meaningful connections in one place.</p>
+          <p>Join a diverse community of pet enthusiasts to seek advice, share experiences, and forge new friendships. Engage in interactive forums and chat rooms designed for meaningful discussions and connections.</p>
+          <p>Celebrate the love for animals by creating personalized profiles for your pets, sharing adorable photos, and heartwarming stories. Connect with fellow pet owners, exchange tips, and celebrate the bond between humans and their furry companions.</p>
+          <p>Access a wealth of pet-related resources, including informative articles, expert advice, and useful guides. Stay updated on the latest trends in pet care, training, nutrition, and health to ensure the well-being of your beloved pets.</p>
+          <p>Join Pet Exchange today for a pet-centric journey filled with connections, experiences, and endless opportunities. Let's build a thriving community where the love for pets knows no boundaries.</p>
+        </div>
+      </div>
+      <img th:src="@{/assets/images/about-img2.jpg}" alt="" >
+    </div>
+    <div id="category">
+      <p class="category-title">Select a Category</p>
+      <div class="category-select">
+        <div class="category-dog">
+          <a href="/dogs"><img th:src="@{/assets/images/category1.png}" alt=""></a>
+          <p><a href="/dogs">Dog</a></p>
+        </div>
+        <div class="category-cat">
+          <a href="/cats"><img th:src="@{/assets/images/category2.png}" alt=""></a>
+          <p><a href="/cats">Cat</a></p>
+        </div>
+      </div>
+    </div>
+    <footer>
+      <div id="footer">
+        <img th:src="@{/assets/images/footer-img.png}" alt="">
+        <div class="footer-content"></div>
+      </div>
+    </footer>
+
+
+
+
+
+
+
+
+    <button
+      onclick="topFunction()" id="backtoheader" class="ti-arrow-circle-up">
+    </button>
+  </body>
+
+
+
+
+  <script src="https://kit.fontawesome.com/cfbcbc4299.js" crossorigin="anonymous"></script>
+  <script th:src="@{/assets/script/script.js}"></script>
+</html>

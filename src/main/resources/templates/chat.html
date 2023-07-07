@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, height=auto, initial-scale=1.0" />
+  <title>Choose your Boss</title>
+  <link rel="shortcut icon" th:href="@{/assets/images/web-icon.png}" type="image/x-icon">
+  <link rel="stylesheet" th:href="@{/assets/css/builder.css}" />
+  <link rel="stylesheet" th:href="@{/assets/themify-icons/themify-icons.css}" />
+</head>
+
+<body>
+  <div id="header">
+    <div class="info">
+      <div class="social-media">
+        <i class="ti-facebook"></i>
+        <i class="ti-instagram"></i>
+        <i class="ti-youtube"></i>
+      </div>
+      <div class="contact">
+        <i class="ti-email"></i>
+        <p>chooseyourboss@gmail.com</p>
+        <i class="ti-mobile"></i>
+        <p>12345678</p>
+      </div>
+    </div>
+    <div class="nav-icon">
+      <a th:href="@{/}"><img th:src="@{/assets/images/header-nav.png}" /></a>
+    </div>
+    <ul id="nav">
+      <li><a th:href="@{'/' + '#about'}">About</a></li>
+      <li><a th:href="@{'/' + '#category'}">Category</a></li>
+      <li><a th:href="@{/pets}">Pets</a></li>
+      <li><a th:href="@{/chat}">Chat</a></li>
+      <li><a sec:authorize="!isAuthenticated()" th:href="@{/login}">Login</a></li>
+      <li sec:authorize="isAuthenticated()">
+        <i class="ti-user"></i>
+        <ul class="sub-nav">
+          <h3 th:text="${currentUser.name}"></h3>
+          <li>
+            <a th:href="@{${currentUser.id == 1} ? '/users' : '/user/' + ${currentUser.id}}">
+              <i class="fa-solid fa-user"></i> Profile
+            </a>
+          </li>
+          <li><a th:href="@{/logout}"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a></li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+  <div class="header-space"></div>
+  <div id="home">
+    <div id="message">
+      <div class="message-wrapper">
+        <div class="message-container">
+          <div class="left">
+            <div class="top">
+              <input type="text" id="searchMessager" placeholder="Search" onkeyup="searchByName()"/>
+            </div>
+            <ul class="people" id="messagerList">
+              <li class="person" th:each="chatRoom : ${chatRooms}" th:data-chat="${chatRoom.senderName}" th:id="${chatRoom.id}">
+                <a th:href="@{/chat/delete/{currentId}/{id}(currentId=${currentUser.id}, id=${chatRoom.id})}">
+                
+                  <button type="submit"><i class="fa-solid fa-xmark"></i></button>
+                  </a>
+                <img th:src="@{/assets/images/header-nav.png}" />
+                <span class="name" th:text="${chatRoom.senderName}"></span>
+                <span class="time" th:text="${chatRoom.time}"></span>
+                <span class="preview" th:text="${chatRoom.preview}"></span>
+              </li>
+            </ul>
+          </div>
+          <div class="right">
+            <div class="top"><span>To: <span class="name" th:text="${chatRooms[0].senderName}"></span></span></div>
+            <div class="chat" th:each="chatRoom : ${chatRooms}" th:data-chat="${chatRoom.senderName}" th:id="'chat-' + ${chatRoom.id}">
+              <div class="conversation-start"></div>
+              <div th:each="chatMessage : ${chatMessages}" th:if="${chatMessage.chatRoomId == chatRoom.id}">
+                  <div th:text="${chatMessage.content}" th:class="${chatMessage.senderId == currentUser.id} ? 'bubble me' : 'bubble you'"></div>
+              </div>
+
+
+              <form class="chat-form" th:action="@{'/chat/' + ${chatRoom.id} + '/' +${currentUser.id} + '/' + ${chatRoom.senderId}}" >
+                  <div class="write">
+                      <input type="text" name="content" />
+                      <button type="submit"><i class="fa-solid fa-paper-plane"></i></button>
+                  </div>
+              </form>
+          </div>          
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <footer>
+    <div id="footer">
+      <img th:src="@{/assets/images/footer-img.png}" alt="">
+      <div class="footer-content"></div>
+    </div>
+  </footer>
+
+
+
+
+
+
+
+
+  <button onclick="topFunction()" id="backtoheader" class="ti-arrow-circle-up">
+  </button>
+</body>
+
+<script src="/webjars/sockjs-client/sockjs.min.js"></script>
+<script src="/webjars/stomp-websocket/stomp.min.js"></script>
+<script src="https://kit.fontawesome.com/cfbcbc4299.js" crossorigin="anonymous"></script>
+<script th:src="@{/assets/script/script.js}"></script>
+<script th:src="@{/assets/script/chat.js}"></script>
+
+</html>

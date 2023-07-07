@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, height=auto, initial-scale=1.0" /> 
+    <title>Choose your Boss</title>
+    <link rel="shortcut icon" th:href="@{/assets/images/web-icon.png}"  type="image/x-icon">
+    <link rel="stylesheet" th:href="@{/assets/css/builder.css}" />
+    <link rel="stylesheet" th:href="@{/assets/themify-icons/themify-icons.css}" />
+  </head>
+  <body>
+    <div id="header">
+      <div class="info">
+        <div class="social-media">
+          <i class="ti-facebook"></i>
+          <i class="ti-instagram"></i>
+          <i class="ti-youtube"></i>
+        </div>
+        <div class="contact">
+          <i class="ti-email"></i>
+          <p>chooseyourboss@gmail.com</p>
+          <i class="ti-mobile"></i>
+          <p>12345678</p>
+        </div>
+      </div>
+      <div class="nav-icon">
+        <a th:href="@{/}"><img th:src="@{/assets/images/header-nav.png}" /></a>
+      </div>
+      <ul id="nav">
+        <li><a th:href="@{'/' + '#about'}">About</a></li>
+        <li><a th:href="@{'/' + '#category'}">Category</a></li>
+        <li><a th:href="@{/pets}">Pets</a></li>
+        <li><a th:href="@{/chat}">Chat</a></li>
+        <li><a sec:authorize="!isAuthenticated()" th:href="@{/login}" >Login</a></li>
+        <li sec:authorize="isAuthenticated()" >
+        	<i class="ti-user"></i>
+        	<ul class="sub-nav">
+            <h3 th:text="${currentUser.name}" ></h3>
+            <li>
+            	<a th:href="@{${currentUser.id == 1} ? '/users' : '/user/' + ${currentUser.id}}">
+					      <i class="fa-solid fa-user"></i> Profile
+				      </a>
+			      </li>
+            <li><a th:href="@{/logout}" ><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a></li>
+        	</ul>
+        </li>
+      </ul>
+    </div>
+    <div class="header-space"></div>
+    <div id="home">
+      <div id="category-breed">
+        <ul th:if="${dog != null}">
+            <li><h1><span  th:text="${dog.name}"></span></h1></li>
+            <li>Recommended For:<span th:text="${dog.recommendedFor}"></span></li>
+            <li>Maintenance Level:<span th:text="${dog.maintenanceLevel}"></span></li>
+            <li>Lifespan:<span th:text="${dog.lifespan}"></span></li>
+            <li>Temperament:<span th:text="${dog.temperament}"></span></li>
+            <li>Health Risk:<span th:text="${dog.healthRisk}"></span></li>
+            <img th:src="@{'/assets/images/dogs/' + ${dog.link} + '.jpg'}">
+        </ul>
+        <ul th:if="${cat != null}">
+          <li><h1><span th:text="${cat.name}"></span></h1></li>
+          <li>Infomation:<span th:text="${cat.infomation}"></span></li>
+          <img th:src="@{'/assets/images/cats/' + ${cat.link} + '.jpg'}">
+        </ul>
+      </div>
+      <div class="pets-list" style="padding-left: 150px;" sec:authorize="isAuthenticated()">
+        <ul class="tabs">
+          <li class="tab">
+            <input type="radio" name="tabs" checked="checked" id="tab1" />
+            <label for="tab1">List Pets</label>
+            <div id="tab-content" class="content">
+              <ul>
+                <li th:each="pet: ${pets}">
+                  <a class="to-owner" th:href="@{/user/{id}(id=${pet.ownerId})}"><i class="fa-solid fa-user" title="Go to Owner"></i></a>
+                  <p>Pet's ID: <span th:text="${pet.id}"></span></p>
+                  <p>Name: <span th:text="${pet.name}"></span></p>
+                  <p>Breed: <span th:text="${pet.breed}"></span></p>
+                  <p>Gender: <span th:text="${pet.gender}"></span></p>
+                  <p>Weight: <span th:text="${pet.weight} + 'Kg'"></span></p>
+                  <span><img th:src="'data:image/jpeg;base64,' + ${pet.image}" /></span>
+                </li>
+              </ul>
+            </div>
+          </li>
+      </div>
+	</div>
+
+
+
+    <footer>
+      <div id="footer">
+        <img th:src="@{/assets/images/footer-img.png}" alt="">
+        <div class="footer-content"></div>
+      </div>
+    </footer>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+      <button
+        onclick="topFunction()" id="backtoheader" class="ti-arrow-circle-up">
+      </button>
+    </body>
+  
+  
+  
+  
+    <script src="https://kit.fontawesome.com/cfbcbc4299.js" crossorigin="anonymous"></script>
+    <script th:src="@{/assets/script/script.js}"></script>
+  </html>
+  

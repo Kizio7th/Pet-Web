@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, height=auto, initial-scale=1.0" /> 
+    <title>Choose your Boss</title>
+    <link rel="shortcut icon" th:href="@{/assets/images/web-icon.png}"  type="image/x-icon">
+    <link rel="stylesheet" th:href="@{/assets/css/builder.css}" />
+    <link rel="stylesheet" th:href="@{/assets/themify-icons/themify-icons.css}" />
+  </head>
+  <body>
+    <div id="header">
+      <div class="info">
+        <div class="social-media">
+          <i class="ti-facebook"></i>
+          <i class="ti-instagram"></i>
+          <i class="ti-youtube"></i>
+        </div>
+        <div class="contact">
+          <i class="ti-email"></i>
+          <p>chooseyourboss@gmail.com</p>
+          <i class="ti-mobile"></i>
+          <p>12345678</p>
+        </div>
+      </div>
+      <div class="nav-icon">
+        <a th:href="@{/}"><img th:src="@{/assets/images/header-nav.png}" /></a>
+      </div>
+      <ul id="nav">
+        <li><a th:href="@{'/' + '#about'}">About</a></li>
+        <li><a th:href="@{'/' + '#category'}">Category</a></li>
+        <li><a th:href="@{/pets}">Pets</a></li>
+        <li><a th:href="@{/chat}">Chat</a></li>
+        <li><a sec:authorize="!isAuthenticated()" th:href="@{/login}" >Login</a></li>
+        <li sec:authorize="isAuthenticated()" >
+        	<i class="ti-user"></i>
+        	<ul class="sub-nav">
+            <h3 th:text="${currentUser.name}"></h3>
+            <li>
+            	<a th:href="@{${currentUser.id == 1} ? '/users' : '/user/' + ${currentUser.id}}">
+					      <i class="fa-solid fa-user"></i> Profile
+				      </a>
+			      </li>
+            <li><a th:href="@{/logout}" ><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a></li>
+        	</ul>
+        </li>
+      </ul>
+    </div>
+    
+    <div class="header-space"></div>
+    <div id="home"></div>
+    <div th:if="${param.success}">
+        <div class="">
+          You have successfully registered our app!
+        </div>
+    </div>
+    <p th:if="${param.error}" class="alert danger">Invalid Email or Password</p>
+   	<p th:if="${param.logout}" class="alert infomation">You have been logged out.</p>
+    <div id="sign">
+        <!-- <i class="ti-close"></i> -->
+        
+        <div class="form-box login">
+            <h2>Login Your Account</h2>
+            <form method="post" role="form" th:action="@{/login}">
+                <div class="input-box">
+                    <i class="ti-user"></i>
+                    <input id="username" name="username" type="text" required>
+                    <label for="">Username</label>
+                </div>
+                <div class="input-box">
+                    <i class="ti-lock"></i>
+                    <input id="password" name="password" type="password" required>
+                    <label for="">Password</label>
+                </div>
+                <div class="remember-forgot" style="display:none">
+                    <label for=""><input type="checkbox" name="remember-me" id="">Remember me</label>
+                    <a href="#">Forgot password? </a>
+                </div>
+                <button type="submit" class="button">Login</button>
+                <div class="login-register">
+                    <p>Don't have an account? 
+                        <a th:href="@{register}" class="register-link">Register</a>
+                    </p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+    <footer>
+      <div id="footer">
+        <img th:src="@{/assets/images/footer-img.png}" alt="">
+        <div class="footer-content"></div>
+      </div>
+    </footer>
+
+
+
+
+
+
+
+    <button
+      onclick="topFunction()" id="backtoheader" class="ti-arrow-circle-up">
+    </button>
+  </body>
+  <script src="https://kit.fontawesome.com/cfbcbc4299.js" crossorigin="anonymous"></script>
+  <script th:src="@{/assets/script/script.js}"></script>
+</html>

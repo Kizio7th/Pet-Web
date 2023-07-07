@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, height=auto, initial-scale=1.0" />
+  <title>Choose your Boss</title>
+  <link rel="shortcut icon" th:href="@{/assets/images/web-icon.png}" type="image/x-icon">
+  <link rel="stylesheet" th:href="@{/assets/css/builder.css}" />
+  <link rel="stylesheet" th:href="@{/assets/themify-icons/themify-icons.css}" />
+</head>
+
+<body>
+  <div id="header">
+    <div class="info">
+      <div class="social-media">
+        <i class="ti-facebook"></i>
+        <i class="ti-instagram"></i>
+        <i class="ti-youtube"></i>
+      </div>
+      <div class="contact">
+        <i class="ti-email"></i>
+        <p>chooseyourboss@gmail.com</p>
+        <i class="ti-mobile"></i>
+        <p>12345678</p>
+      </div>
+    </div>
+    <div class="nav-icon">
+      <a th:href="@{/}"><img th:src="@{/assets/images/header-nav.png}" /></a>
+    </div>
+    <ul id="nav">
+      <li><a th:href="@{'/' + '#about'}">About</a></li>
+      <li><a th:href="@{'/' + '#category'}">Category</a></li>
+      <li><a th:href="@{/pets}">Pets</a></li>
+      <li><a th:href="@{/chat}">Chat</a></li>
+      <li><a sec:authorize="!isAuthenticated()" th:href="@{/login}">Login</a></li>
+      <li sec:authorize="isAuthenticated()">
+        <i class="ti-user"></i>
+        <ul class="sub-nav">
+          <h3 th:text="${currentUser.name}"></h3>
+          <li>
+            <a th:href="@{${currentUser.id == 1} ? '/users' : '/user/' + ${currentUser.id}}">
+              <i class="fa-solid fa-user"></i> Profile
+            </a>
+          </li>
+          <li><a th:href="@{/logout}"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a></li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+
+  <div class="header-space"></div>
+  <div id="home"></div>
+  <p th:if="${param.success}" class="alert success"> You have successfully registered our website!</p>
+  <div id="sign">
+    <!-- <i class="ti-close"></i> -->
+
+    <div class="form-box register">
+      <h2>Pet Information</h2>
+      <form onsubmit="return validateForm()" method="post" role="form" enctype="multipart/form-data"
+        th:action="@{${user.id} != null} ? @{/pet/{id}/save(id=${user.id})} : @{/pet/update}" th:object="${pet}">
+        <div class="input-box" style="display:none">
+          <input id="id" name="id" type="text" th:field="*{id}" readonly>
+          <label for="">Id</label>
+        </div>
+        <div class="input-box">
+          <i class="fa-solid fa-signature"></i>
+          <input id="name" name="name" type="text" th:field="*{name}" required>
+          <label for="">Pet's Name</label>
+          <p th:errors="*{name}" th:if="${#fields.hasErrors('name')}" class="alert danger"></p>
+        </div>
+        <div class="input-box">
+          <i class="fa-solid fa-paw"></i>
+          <select id="species" name="species" th:field="*{species}" onchange="getBreed()" onload="getBreed()" required>
+            <option value="" selected>-- Choose Species --</option>
+            <option value="dog">Dog</option>
+            <option value="cat">Cat</option>
+          </select>
+          <label for="">Species</label>
+          <p th:errors="*{species}" th:if="${#fields.hasErrors('species')}" class="alert danger"></p>
+        </div>
+        <div class="input-box">
+          <i class="fa-solid fa-filter"></i>
+          <select id="breed" name="breed" th:field="*{breed}" type="text" required>
+            <option value="" selected>-- Choose Breed --</option>
+            <option class="dog-breed" th:each="dog : ${dogs}" th:value="${dog.name}" th:text="${dog.name}"
+              th:style="${pet.species == 'cat' ? 'display: none' : ''}"></option>
+            <option class="cat-breed" th:each="cat : ${cats}" th:value="${cat.name}" th:text="${cat.name}"
+              th:style="${pet.species == 'dog' ? 'display: none' : ''}"></option>
+          </select>
+          <label for="">Breed</label>
+          <p th:errors="*{breed}" th:if="${#fields.hasErrors('breed')}" class="alert danger"></p>
+        </div>
+        <div class="input-box">
+          <i class="fa-solid fa-venus-mars"></i>
+          <select id="gender" name="gender" th:field="*{gender}" required>
+            <option value="" selected>-- Choose Gender --</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Neuter">Neuter</option>
+          </select>
+          <label for="">Gender</label>
+          <p th:errors="*{gender}" th:if="${#fields.hasErrors('gender')}" class="alert danger"></p>
+        </div>
+        <div class="input-box">
+          <i class="fa-solid fa-weight-hanging"></i>
+          <input id="weight" name="weight" th:field="*{weight}" type="text" required>
+          <label for="">Weight</label>
+          <p th:errors="*{weight}" th:if="${#fields.hasErrors('weight')}" class="alert danger"></p>
+        </div>
+
+
+        <div class="upload-image">
+          <label for="photo">Choose a Picture<i class="fa-solid fa-image"></i></label>
+          <input id="photo" name="photo" type="file" onchange="previewImage(event)" accept="image/*"
+            style="display: none;">
+          <img id="thumbnail" th:src="@{'data:image/png;base64,' + ${pet.image}}">
+        </div>
+        <button type="submit" class="button">Confirm</button>
+
+      
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+  <footer>
+    <div id="footer">
+      <img th:src="@{/assets/images/footer-img.png}" alt="">
+      <div class="footer-content"></div>
+    </div>
+  </footer>
+
+
+
+
+
+
+
+  <button onclick="topFunction()" id="backtoheader" class="ti-arrow-circle-up">
+  </button>
+</body>
+<script src="https://kit.fontawesome.com/cfbcbc4299.js" crossorigin="anonymous"></script>
+<script th:src="@{/assets/script/script.js}"></script>
+
+</html>
